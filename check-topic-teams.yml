@@ -1,4 +1,4 @@
   defaultTeam: 'Admin'
-  issueTitle: 'Please Add Topics and Give `All-Pivotal` Team Read Access'
-  memberReplacePhrase: 'REPO-CREATOR'
+  issueTitle: 'Please Add Topics and Give `Employee` Team Read Access'
+  memberReplacePhrase: 'REPO_CREATOR'
   ccList: ['']
