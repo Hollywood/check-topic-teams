@@ -8,13 +8,11 @@ class CheckTeamsTopics {
     var defaults = require('./defaults')
     const configRepo = (process.env.CONFIG_REPO_NAME) ? process.env.CONFIG_REPO_NAME : defaults.CONFIG_REPO_NAME
     const configFile = (process.env.CONFIG_FILE_NAME) ? process.env.CONFIG_FILE_NAME : defaults.CONFIG_FILE_NAME
+    const templateFile = (process.env.TEMPLATE_FILE_NAME) ? process.env.TEMPLATE_FILE_NAME : defaults.TEMPLATE_FILE_NAME
 
     // Pull Config
-    this.robot.log.trace('Loading config')
-    this.robot.log.trace(`Org: ${context.payload}`)
-    this.robot.log.trace(`Repo: ${configRepo}`)
-    this.robot.log.trace(`Config Path: ${configFile}`)
-    const res = await context.github.repos.getContents({
+    this.robot.log('Loading config')
+    var res = await context.github.repos.getContents({
       owner: context.payload.organization.login,
       repo: configRepo,
       path: configFile
@@ -22,9 +20,7 @@ class CheckTeamsTopics {
       const content = Buffer.from(res.data.content, 'base64').toString('utf8')
       const yaml = require('js-yaml')
       this.config = yaml.safeLoad(content)
-      this.robot.log.trace(config)
     }).catch(() => {
-      this.robot.log(defaults)
       this.config = defaults
     })
 
@@ -56,12 +52,25 @@ class CheckTeamsTopics {
 
     // Check to see if a default team has been added OR a topic has been added
     // If not, create an issue
+    var issueBody = ''
     if (!hasDefaultTeam || topics.length === 0) {
+      const res = await context.github.repos.getContents({
+        owner: context.payload.organization.login,
+        repo: configRepo,
+        path: templateFile
+      }).then(() => {
+        issueBody = res.repository.object.text
+        issueBody = issueBody.replace(new RegExp(`${config.memberReplacePhrase}`, 'g'), `@${context.payload.membership.user.login}`)
+        issueBody += (config.ccList) ? `\n\n<h6>/cc ${config.ccList}</h6>` : ''
+      }).catch((e) => {
+        this.robot.log(e)
+      })
+
       const issueParams = {
         owner: org,
         repo: repository,
         title: this.config.issueTitle,
-        body: this.config.issueBody
+        body: issueBody
       }
 
       const createIssueParams = Object.assign({}, issueParams || {})
