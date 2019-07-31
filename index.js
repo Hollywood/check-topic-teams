@@ -12,16 +12,17 @@ class CheckTeamsTopics {
 
     // Pull Config
     this.robot.log('Loading config')
-    var res = await context.github.repos.getContents({
+    await context.github.repos.getContents({
       owner: context.payload.organization.login,
       repo: configRepo,
       path: configFile
-    }).then(() => {
-      const content = Buffer.from(res.data.content, 'base64').toString('utf8')
+    }).then(({ data, headers, status }) => {
+      const content = Buffer.from(data.content, 'base64').toString('utf8')
       const yaml = require('js-yaml')
-      this.config = yaml.safeLoad(content)
-    }).catch(() => {
-      this.config = defaults
+      config = yaml.safeLoad(content)
+    }).catch((e) => {
+      this.robot.log(e)
+      config = defaults
     })
 
     // Assign org and repo variables
@@ -50,18 +51,18 @@ class CheckTeamsTopics {
       }
     }))
 
+    this.robot.log.trace(hasDefaultTeam)
     // Check to see if a default team has been added OR a topic has been added
     // If not, create an issue
     var issueBody = ''
     if (!hasDefaultTeam || topics.length === 0) {
-      const res = await context.github.repos.getContents({
+     await context.github.repos.getContents({
         owner: context.payload.organization.login,
         repo: configRepo,
         path: templateFile
-      }).then(() => {
-        this.robot.log(res.repository.object.text)
-        issueBody = res.repository.object.text
-        issueBody = issueBody.replace(new RegExp(`${config.memberReplacePhrase}`, 'g'), `@${context.payload.repository.sender.login}`)
+      }).then(({ data, headers, status }) => {
+        issueBody = Buffer.from(data.content, 'base64').toString('utf8')
+        issueBody = issueBody.replace(new RegExp(`${config.memberReplacePhrase}`, 'g'), `@${context.payload.sender.login}`)
         issueBody += (config.ccList) ? `\n\n<h6>/cc ${config.ccList}</h6>` : ''
       }).catch((e) => {
         this.robot.log(e)
@@ -70,7 +71,7 @@ class CheckTeamsTopics {
       const issueParams = {
         owner: org,
         repo: repository,
-        title: this.config.issueTitle,
+        title: config.issueTitle,
         body: issueBody
       }
 
