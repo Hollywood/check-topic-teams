@@ -59,6 +59,7 @@ class CheckTeamsTopics {
         repo: configRepo,
         path: templateFile
       }).then(() => {
+        this.robot.log(res.repository.object.text)
         issueBody = res.repository.object.text
         issueBody = issueBody.replace(new RegExp(`${config.memberReplacePhrase}`, 'g'), `@${context.payload.repository.sender.login}`)
         issueBody += (config.ccList) ? `\n\n<h6>/cc ${config.ccList}</h6>` : ''
