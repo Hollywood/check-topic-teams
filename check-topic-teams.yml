@@ -1,0 +1,4 @@
+  defaultTeam: 'Admin'
+  issueTitle: 'Default Team or Topics Missing'
+  issueBody: 'Please update your repository to include the default team and topics. Close this issue once completed.'
+  ccList: ['']
