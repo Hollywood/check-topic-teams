@@ -1,4 +1,5 @@
   defaultTeam: 'Admin'
   issueTitle: 'Please Add Topics and Give `Employee` Team Read Access'
   memberReplacePhrase: 'REPO_CREATOR'
+  issueLabel: 'notification-test'
   ccList: ['']

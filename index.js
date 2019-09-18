@@ -1,9 +1,9 @@
 class CheckTeamsTopics {
-  constructor(robot) {
+  constructor (robot) {
     this.robot = robot
   }
 
-  async PerformCheck(context) {
+  async PerformCheck (context) {
     var config = {}
     var defaults = require('./defaults')
     const configRepo = (process.env.CONFIG_REPO_NAME) ? process.env.CONFIG_REPO_NAME : defaults.CONFIG_REPO_NAME
@@ -56,7 +56,7 @@ class CheckTeamsTopics {
     // If not, create an issue
     var issueBody = ''
     if (!hasDefaultTeam || topics.length === 0) {
-     await context.github.repos.getContents({
+      await context.github.repos.getContents({
         owner: context.payload.organization.login,
         repo: configRepo,
         path: templateFile
@@ -72,7 +72,9 @@ class CheckTeamsTopics {
         owner: org,
         repo: repository,
         title: config.issueTitle,
-        body: issueBody
+        body: issueBody,
+        labels: [config.issueLabel],
+        assignees: [context.payload.sender.login]
       }
 
       const createIssueParams = Object.assign({}, issueParams || {})
