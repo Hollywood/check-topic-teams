@@ -1,6 +1,10 @@
 # check-teams-topics
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that 
+A GitHub App built with [Probot](https://github.com/probot/probot) that upon new Repository creation will create an issue reminding the repo owner to add the appropriate topics and teams. In the issue, it `cc`s the instance `Admin` team to ensure that this is fulfilled. 
+
+Ideas for future:
+  - Create a ticket in their help desk system after a period of time (now that `schedule` is an event) if these requirements are not satisfied.
+  - Determine how to check to see if a `Topic` pertaining to a valid internal `project` has been added to the repo.
 
 ## Setup
 
