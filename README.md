@@ -5,6 +5,7 @@ A GitHub App built with [Probot](https://github.com/probot/probot) that upon new
 Ideas for future:
   - Create a ticket in their help desk system after a period of time (now that `schedule` is an event) if these requirements are not satisfied.
   - Determine how to check to see if a `Topic` pertaining to a valid internal `project` has been added to the repo.
+  - Determine if teams that are related to other repos with the same project topic are missing from any particular one. If so, create an issue asking the repo owner if they'd like to add the team.
 
 ## Setup
 
