@@ -1,6 +1,6 @@
 # Enforcing Topics and Teams on a Repository
 
-A GitHub App built with [Probot](https://github.com/probot/probot) that upon new Repository creation will create an issue reminding the repo owner to add the appropriate topics and teams. In the issue, it `cc`s the instance `Admin` team to ensure that this is fulfilled. 
+A GitHub App built with [Probot](https://github.com/probot/probot) that upon new Repository creation will create an issue reminding the repo owner to add the appropriate topics and teams. In the issue, it `/CCs` the instance `Admin` team (`.env` var) to ensure that this is fulfilled. 
 
 Ideas for future:
   - Create a ticket in their help desk system after a period of time (now that `schedule` is an event) if these requirements are not satisfied.
