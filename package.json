@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "before-after-hook": "^2.1.0",
-    "probot": "^9.2.20"
+    "probot": "^12.2.9"
   },
   "devDependencies": {
     "jest": "^24.0.0",
